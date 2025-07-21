@@ -14,12 +14,12 @@ import static io.restassured.RestAssured.given;
 @Listeners(core.Listener.class)
 public class FakeStoreApiTest {
 
+    String baseUri = "https://fakestoreapi.com";
 
-
-        String baseUri = "https://fakestoreapi.com";
     @Test(priority = 1,description = "GET ALL products")
     public void TC_01_verify_responseCodeForAllProducts(){
         stepLog("====TC_01: Verify status code is 200 for getting all products====");
+       //Send GET REquest
         Response response= given()
                 .baseUri(baseUri)
                 .when()
@@ -37,7 +37,14 @@ public class FakeStoreApiTest {
     @Test(priority = 2,description = "GET All Products")
     public void TC_02_verifyResponseContains_non_empty(){
         stepLog("===TC_02: Verify response contains a non-empty list of products====");
-        Response response= given().baseUri(baseUri).when().get("/products").then().extract().response();
+        //Send GET Request
+        Response response= given()
+                .baseUri(baseUri)
+                .when()
+                .get("/products")
+                .then()
+                .extract()
+                .response();
         System.out.println("Response: "+response.asPrettyString());
 
         Assert.assertEquals(response.getStatusCode(), 200,"Mismatch of expected data");
@@ -50,7 +57,15 @@ public class FakeStoreApiTest {
     @Test(priority = 3, description = "GET Single Products")
     public void TC_03_verifyStatusForSingleProduct(){
         stepLog("===TC_03: Verify status code is 200 for valid product ID===");
-        Response response= given().baseUri(baseUri).when().get("/products/1").then().extract().response();
+        //Send GET Request
+        Response response= RestAssured
+                .given()
+                .baseUri(baseUri)
+                .when()
+                .get("/products/1")
+                .then()
+                .extract()
+                .response();
         System.out.println("Response: "+response.asPrettyString());
 
         int statusCode=response.getStatusCode();
@@ -63,7 +78,15 @@ public class FakeStoreApiTest {
     public void TC_04_verifyProductDetailsById(){
         stepLog("TC_04: Verify response contains correct product details for ID");
         int productId=5;
-        Response response=given().baseUri(baseUri).when().get("/products/5").then().extract().response();
+        //Send GET Request
+        Response response=RestAssured
+                .given()
+                .baseUri(baseUri)
+                .when()
+                .get("/products/5")
+                .then()
+                .extract()
+                .response();
         System.out.println("Response: "+response.asPrettyString());
 
         Assert.assertEquals(response.getStatusCode(),200,"mismatch of data");
@@ -76,7 +99,14 @@ public class FakeStoreApiTest {
     public void TC_05_verifyStatusCodeForInvalidId(){
         stepLog("===TC_05: Verify status code is 404 for invalid product ID===");
         int productId=9999;
-        Response response=given().baseUri(baseUri).when().get("/products/9999").then().extract().response();
+        //Send GET Request
+        Response response=given()
+                .baseUri(baseUri)
+                .when()
+                .get("/products/9999")
+                .then()
+                .extract()
+                .response();
         System.out.println("Response: "+response.asPrettyString());
 
         int statusCode=response.getStatusCode();
@@ -96,7 +126,7 @@ public class FakeStoreApiTest {
         requestBody.put("description","This is newly created data added to json file");
         requestBody.put("image", "https://fakestoreapi.com/img/test-product.jpg");
         requestBody.put("category", "electronics");
-
+        //Send POST Request
         Response response = RestAssured
                 .given()
                 .baseUri(baseUri)
@@ -127,7 +157,17 @@ public class FakeStoreApiTest {
     public void TC_07_verifyStatusCodeForInvalidPayload(){
         stepLog("===TC_07: Verify status code 400 for invalid payload===");
         String invalidPayload = "{ \"productName\": \"\", \"price\": \"invalidPrice\" }";
-        Response response= RestAssured.given().baseUri(baseUri).header("Content-Type","application/json").body(invalidPayload).when().post("/products").then().extract().response();
+        //Send POST Request
+        Response response= RestAssured
+                .given()
+                .baseUri(baseUri)
+                .header("Content-Type","application/json")
+                .body(invalidPayload)
+                .when()
+                .post("/products")
+                .then()
+                .extract()
+                .response();
         System.out.println("Response: "+response.asPrettyString());
 
         int statusCode=response.getStatusCode();
@@ -158,11 +198,10 @@ public class FakeStoreApiTest {
                 .then()
                 .extract().response();
 
-        // Verify status code
+
         Assert.assertEquals(response.getStatusCode(), 200, "Expected status code is 200 for product update");
 
-        // Print response body
-        System.out.println("Response JSON: ");
+        System.out.println("Response : ");
         System.out.println(response.asPrettyString());
 
         // Verify response contains updated product ID
@@ -174,7 +213,15 @@ public class FakeStoreApiTest {
     @Test(priority = 9,description = "Delete Product")
     public void TC_09_VerifyDeletionWithValidProductId(){
         stepLog("===TC_09:Verify product deletion with valid product ID===");
-        Response response=RestAssured.given().baseUri(baseUri).when().delete("/products/21").then().extract().response();
+       //Send DELETE Request
+        Response response=RestAssured
+                .given()
+                .baseUri(baseUri)
+                .when()
+                .delete("/products/21")
+                .then()
+                .extract()
+                .response();
         System.out.println("Response: "+response.asPrettyString());
         int StatusCode= response.getStatusCode();
         Assert.assertEquals(StatusCode,200,"missmatch of status code");
@@ -184,6 +231,7 @@ public class FakeStoreApiTest {
     @Test(priority = 10,description = "GET ALL Carts")
     public void TC_10_verify_responseCodeForAllCarts(){
         stepLog("====TC_10: Verify status code is 200 for fetching all carts====");
+        //Send GET Request
         Response response= given()
                 .baseUri(baseUri)
                 .when()
@@ -199,7 +247,14 @@ public class FakeStoreApiTest {
     @Test(priority = 11, description = "GET Single Cart")
     public void TC_11_verifyStatusForSingleCart(){
         stepLog("===TC_11: Verify status code is 200 for valid Cart ID===");
-        Response response= given().baseUri(baseUri).when().get("/carts/1").then().extract().response();
+        //Send GET Request
+        Response response= given()
+                .baseUri(baseUri)
+                .when()
+                .get("/carts/1")
+                .then()
+                .extract()
+                .response();
         System.out.println("Response: "+response.asPrettyString());
 
         int statusCode=response.getStatusCode();
@@ -226,6 +281,8 @@ public class FakeStoreApiTest {
         product2.put("quantity", 1);
 
         cartPayLoad.put("products", new Map[]{product1, product2});
+
+       //Send POST Request
         Response response = RestAssured
                 .given()
                 .baseUri(baseUri)
@@ -283,10 +340,10 @@ public class FakeStoreApiTest {
                 .then()
                 .extract().response();
 
-        // Verify status code
+
         Assert.assertEquals(response.getStatusCode(), 200, "Expected status code is 200 for product update");
 
-        // Print response body
+
         System.out.println("Response JSON: ");
         System.out.println(response.asPrettyString());
 
@@ -299,7 +356,15 @@ public class FakeStoreApiTest {
     @Test(priority = 14,description = "Delete Cart")
     public void TC_14_VerifyDeletionWithValidCartId(){
         stepLog("===TC_14:Verify product deletion with valid cart ID===");
-        Response response=RestAssured.given().baseUri(baseUri).when().delete("/carts/11").then().extract().response();
+       //Send DELETE Request
+        Response response=RestAssured
+                .given()
+                .baseUri(baseUri)
+                .when()
+                .delete("/carts/11")
+                .then()
+                .extract()
+                .response();
         System.out.println("Response: "+response.asPrettyString());
         int StatusCode= response.getStatusCode();
         Assert.assertEquals(StatusCode,200,"missmatch of status code");
@@ -312,6 +377,7 @@ public class FakeStoreApiTest {
     @Test(priority = 15,description = "GET ALL Users")
     public void TC_15_verify_responseCodeForAllCarts(){
         stepLog("====TC_15: Verify status code is 200 for fetching all users====");
+        //Send GET Request
         Response response= given()
                 .baseUri(baseUri)
                 .when()
@@ -327,7 +393,14 @@ public class FakeStoreApiTest {
     @Test(priority = 16, description = "GET Single User")
     public void TC_16_verifyStatusForSingleUser(){
         stepLog("===TC_16: Verify response contains correct user details for ID===");
-        Response response= given().baseUri(baseUri).when().get("/users/1").then().extract().response();
+       //Send GET Request
+        Response response= given()
+                .baseUri(baseUri)
+                .when()
+                .get("/users/1")
+                .then()
+                .extract()
+                .response();
         System.out.println("Response: "+response.asPrettyString());
 
         int statusCode=response.getStatusCode();
@@ -385,7 +458,7 @@ public class FakeStoreApiTest {
             System.out.println("Response Body:\n" + response.asPrettyString());
 
             //  Assert status code is 201
-            Assert.assertEquals(response.getStatusCode(), 200, "Expected status code is 201 for user creation");
+            Assert.assertEquals(response.getStatusCode(), 200, "Expected status code is 201 for user creation");//201 is the actual status code but in this website 200 is status code for all request
 
             //  Assert response contains 'id'
             int createdUserId = response.jsonPath().getInt("id");
@@ -440,14 +513,14 @@ public class FakeStoreApiTest {
                 .extract()
                 .response();
 
-        // Verify status code
+
         Assert.assertEquals(response.getStatusCode(), 200, "Expected status code is 200 for User update");
 
-        //  Print response body
+
         System.out.println("Response JSON: ");
         System.out.println(response.asPrettyString());
 
-        //  Validate some updated fields
+
         Assert.assertEquals(response.jsonPath().getString("username"), "Arun", "Username mismatch");
         Assert.assertEquals(response.jsonPath().getString("email"), "arun@gmail.com", "Email mismatch");
         Assert.assertEquals(response.jsonPath().getString("name.firstname"), "Arun", "Firstname mismatch");
@@ -458,7 +531,15 @@ public class FakeStoreApiTest {
     @Test(priority = 19,description = "Delete User")
     public void TC_19_VerifyDeletionWithValidCartId(){
         stepLog("===TC_19:Verify user deletion with valid ID===");
-        Response response=RestAssured.given().baseUri(baseUri).when().delete("/users/10").then().extract().response();
+        //create DELETE Request
+        Response response=RestAssured
+                .given()
+                .baseUri(baseUri)
+                .when()
+                .delete("/users/10")
+                .then()
+                .extract()
+                .response();
         System.out.println("Response: "+response.asPrettyString());
         int StatusCode= response.getStatusCode();
         Assert.assertEquals(StatusCode,200,"missmatch of status code");
@@ -486,11 +567,10 @@ public class FakeStoreApiTest {
                 .extract()
                 .response();
 
-        //  Log response
+
         System.out.println("Response Status Code: " + response.getStatusCode());
         System.out.println("Response Body:\n" + response.asPrettyString());
 
-        //  Assertions
         Assert.assertEquals(response.getStatusCode(), 200, "Expected status code is 200 for successful login");
 
         String token = response.jsonPath().getString("token");
@@ -520,25 +600,14 @@ public class FakeStoreApiTest {
                 .extract()
                 .response();
 
-        //  Log response
+
         System.out.println("Response Status Code: " + response.getStatusCode());
         System.out.println("Response Body:" + response.asPrettyString());
 
-        // Assertions
         Assert.assertEquals(response.getStatusCode(), 401, "Expected status code is 400 for unsuccessful login");//401 is the actual status but 200 is valid in this server
 
         System.out.println(" Login failed as expected for invalid credentials");
     }
-
-
-
-
-
-
-
-
-
-
 
     public void stepLog(String text){
         System.out.println("\n***"+text.toUpperCase()+"***\n");
