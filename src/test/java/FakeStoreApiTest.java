@@ -548,7 +548,7 @@ public class FakeStoreApiTest {
 
     @Test(priority = 20, description = "Login with Valid Credentials")
     public void TC_20_verifyLoginSuccessful() {
-        stepLog("***===FS_TC_20: VERIFY LOGIN SUCCESSFUL WITH VALID CREDENTIALS===***");
+        stepLog("===TC_20: VERIFY LOGIN SUCCESSFUL WITH VALID CREDENTIALS===");
 
         //  Create login payload
         Map<String, String> loginPayload = new HashMap<>();
@@ -581,7 +581,7 @@ public class FakeStoreApiTest {
 
     @Test(priority = 21, description = "Login with Invalid Credentials")
     public void TC_21_verifyLoginUnsuccessful() {
-        stepLog("===FS_TC_21: VERIFY LOGIN FAILS WITH INVALID CREDENTIALS===");
+        stepLog("===TC_21: VERIFY LOGIN FAILS WITH INVALID CREDENTIALS===");
 
         //  Invalid credentials
         Map<String, String> loginPayload = new HashMap<>();
